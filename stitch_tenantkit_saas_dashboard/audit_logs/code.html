@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TenantKit Lite - Audit Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f7f9fb",
+                    "surface-container-highest": "#e0e3e5",
+                    "surface": "#f7f9fb",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed-variant": "#3c475a",
+                    "on-primary-container": "#8590a6",
+                    "tertiary-fixed-dim": "#ddc39d",
+                    "on-surface": "#191c1e",
+                    "surface-dim": "#d8dadc",
+                    "inverse-on-surface": "#eff1f3",
+                    "primary-fixed": "#d8e3fb",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#54647a",
+                    "primary-fixed-dim": "#bcc7de",
+                    "surface-container-lowest": "#ffffff",
+                    "primary": "#091426",
+                    "secondary-container": "#d0e1fb",
+                    "on-surface-variant": "#45474c",
+                    "secondary": "#505f76",
+                    "on-secondary-fixed": "#0b1c30",
+                    "error": "#ba1a1a",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#35260c",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e6e8ea",
+                    "inverse-primary": "#bcc7de",
+                    "tertiary": "#1e1200",
+                    "surface-container": "#eceef0",
+                    "surface-variant": "#e0e3e5",
+                    "on-tertiary-fixed": "#271902",
+                    "outline": "#75777d",
+                    "primary-container": "#1e293b",
+                    "on-background": "#191c1e",
+                    "outline-variant": "#c5c6cd",
+                    "inverse-surface": "#2d3133",
+                    "secondary-fixed": "#d3e4fe",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#fadfb8",
+                    "surface-tint": "#545f73",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "on-tertiary-fixed-variant": "#564427",
+                    "surface-bright": "#f7f9fb",
+                    "on-tertiary-container": "#a38c6a",
+                    "on-primary-fixed": "#111c2d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "container-margin": "40px",
+                    "gutter": "20px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "md": "16px",
+                    "xl": "32px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "title-sm": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-sm": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "display-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { background-color: #f7f9fb; }
+    </style>
+</head>
+<body class="font-body-md text-body-md text-on-background min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 bottom-0 flex flex-col p-4 w-60 h-screen border-r border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 font-sans text-sm font-medium text-slate-900 dark:text-slate-100 z-50">
+<div class="mb-8 px-2">
+<h1 class="text-lg font-bold text-slate-900 dark:text-slate-50 tracking-tight">TenantKit Lite</h1>
+<p class="text-slate-500 font-body-sm text-body-sm mt-1">Property Management</p>
+</div>
+<ul class="flex flex-col gap-1 flex-1">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">tactic</span>
+                    Projects
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+                    Members
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+                    Invitations
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-200/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-50 font-semibold duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">history</span>
+                    Audit Logs
+                </a>
+</li>
+<li class="mt-auto">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                    Settings
+                </a>
+</li>
+</ul>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-w-0 pl-60">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between px-6 sticky top-0 z-40 h-16 border-b border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 font-sans text-sm text-slate-900 dark:text-slate-100">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-slate-400 focus:ring-0 w-64 transition-opacity duration-150" placeholder="Search logs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-600 hover:text-slate-900 dark:hover:text-slate-50 transition-opacity duration-150 flex items-center gap-2">
+                    Organization Switcher
+                    <span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+<div class="h-4 w-px bg-slate-200 mx-1"></div>
+<button class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-opacity duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-opacity duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+<img alt="User avatar" class="w-8 h-8 rounded-full border border-slate-200 ml-2" data-alt="Close up professional headshot of a man with short brown hair smiling subtly against a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2Q6xkpBMSoq02Y1UG6W03DMwjtjniLztcwQDYX93G1rTI8rgW9JStpecqmYzQWHGhRWBxg2Q4ZaXnOndfCR7hJyCWKYPtrsTwwMzjfzsyrq26dZC0VrnAVVMY9bubDEt-zjVPUNlied3vjNna0cc8qnR6QTUh6YoUr5TBY0wh-tF06BfbtnuK86bj10Ke46UJ1Pu2uW6YbuV7_kZ5oqIUSHyyQp7EYeyHNmKixoflpUkwAR2K3-67eVYdikEgeL094yACgjdTd0x5"/>
+</div>
+</header>
+<!-- Page Content -->
+<main class="p-lg flex-1">
+<div class="flex items-center justify-between mb-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">System Audit Logs</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Immutable record of all administrative and user actions across the platform.</p>
+</div>
+<div class="flex items-center gap-sm">
+<button class="px-md py-sm bg-surface-container-lowest border border-outline-variant rounded text-on-surface hover:bg-surface-container-low transition-colors font-title-sm text-body-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        Filter
+                    </button>
+<button class="px-md py-sm bg-primary-container text-on-primary rounded font-title-sm text-body-md hover:opacity-90 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export CSV
+                    </button>
+</div>
+</div>
+<!-- Dense Data Table Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg shadow-[0_4px_6px_rgba(0,0,0,0.02)] overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface border-b border-outline-variant">
+<tr>
+<th class="py-sm px-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Timestamp (UTC)</th>
+<th class="py-sm px-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">User</th>
+<th class="py-sm px-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Action</th>
+<th class="py-sm px-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Resource ID</th>
+<th class="py-sm px-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">IP Address</th>
+<th class="py-sm px-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface whitespace-nowrap">2023-10-24 14:32:01</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-primary-fixed-dim text-on-primary-fixed flex items-center justify-center font-label-caps text-[9px]">JD</div>
+                                    john.doe@tenantkit.com
+                                </td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface">user.login</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant font-mono text-[11px]">usr_8f92a1b</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant">192.168.1.105</td>
+<td class="py-sm px-md text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-primary-fixed text-on-primary-fixed">Success</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface whitespace-nowrap">2023-10-24 14:28:45</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-label-caps text-[9px]">AS</div>
+                                    alice.smith@domain.com
+                                </td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface">project.update_settings</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant font-mono text-[11px]">prj_c3d4e5f</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant">10.0.0.52</td>
+<td class="py-sm px-md text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-primary-fixed text-on-primary-fixed">Success</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface whitespace-nowrap">2023-10-24 13:15:22</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-primary-fixed-dim text-on-primary-fixed flex items-center justify-center font-label-caps text-[9px]">JD</div>
+                                    john.doe@tenantkit.com
+                                </td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface">member.invite</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant font-mono text-[11px]">inv_b7a8c9d</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant">192.168.1.105</td>
+<td class="py-sm px-md text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-tertiary-fixed text-on-tertiary-fixed">Pending</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface whitespace-nowrap">2023-10-24 11:42:09</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant w-5 h-5 flex items-center justify-center">api</span>
+                                    System API
+                                </td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface">invoice.delete</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant font-mono text-[11px]">inv_9f8e7d6</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant">172.16.254.1</td>
+<td class="py-sm px-md text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-error-container text-on-error-container">Failed</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface whitespace-nowrap">2023-10-24 10:05:33</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-label-caps text-[9px]">MR</div>
+                                    mike.ross@domain.com
+                                </td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface">tenant.create</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant font-mono text-[11px]">tnt_1a2b3c4</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant">10.0.0.128</td>
+<td class="py-sm px-md text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-primary-fixed text-on-primary-fixed">Success</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface whitespace-nowrap">2023-10-24 09:12:15</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-label-caps text-[9px]">MR</div>
+                                    mike.ross@domain.com
+                                </td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface">user.login</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant font-mono text-[11px]">usr_4d3c2b1</td>
+<td class="py-sm px-md font-body-sm text-body-sm text-on-surface-variant">10.0.0.128</td>
+<td class="py-sm px-md text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-primary-fixed text-on-primary-fixed">Success</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="border-t border-outline-variant bg-surface px-md py-sm flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Showing 1 to 6 of 1,248 entries</span>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant text-on-surface-variant hover:bg-surface-container-low transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-primary-container text-on-primary font-body-sm text-body-sm transition-colors">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant text-on-surface hover:bg-surface-container-low font-body-sm text-body-sm transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant text-on-surface hover:bg-surface-container-low font-body-sm text-body-sm transition-colors">3</button>
+<span class="px-2 text-on-surface-variant">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TenantKit Lite - Members</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f7f9fb",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface": "#f7f9fb",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "on-primary-container": "#8590a6",
+                        "tertiary-fixed-dim": "#ddc39d",
+                        "on-surface": "#191c1e",
+                        "surface-dim": "#d8dadc",
+                        "inverse-on-surface": "#eff1f3",
+                        "primary-fixed": "#d8e3fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#54647a",
+                        "primary-fixed-dim": "#bcc7de",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#091426",
+                        "secondary-container": "#d0e1fb",
+                        "on-surface-variant": "#45474c",
+                        "secondary": "#505f76",
+                        "on-secondary-fixed": "#0b1c30",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#35260c",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "inverse-primary": "#bcc7de",
+                        "tertiary": "#1e1200",
+                        "surface-container": "#eceef0",
+                        "surface-variant": "#e0e3e5",
+                        "on-tertiary-fixed": "#271902",
+                        "outline": "#75777d",
+                        "primary-container": "#1e293b",
+                        "on-background": "#191c1e",
+                        "outline-variant": "#c5c6cd",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#fadfb8",
+                        "surface-tint": "#545f73",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-tertiary-fixed-variant": "#564427",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-container": "#a38c6a",
+                        "on-primary-fixed": "#111c2d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "container-margin": "40px",
+                        "gutter": "20px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "title-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "display-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased font-sans">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col w-60 h-screen border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 fixed left-0 top-0 bottom-0 p-4 z-50">
+<div class="mb-8 px-2">
+<div class="text-lg font-bold text-slate-900 dark:text-slate-50">TenantKit Lite</div>
+<div class="text-xs text-slate-500 mt-1">Property Management</div>
+</div>
+<ul class="flex flex-col space-y-1 flex-1 font-sans text-sm font-medium">
+<li>
+<a class="flex items-center px-3 py-2 rounded-DEFAULT text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center px-3 py-2 rounded-DEFAULT text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="tactic">tactic</span>
+                    Projects
+                </a>
+</li>
+<li>
+<a class="flex items-center px-3 py-2 rounded-DEFAULT bg-slate-200/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-50 font-semibold duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+                    Members
+                </a>
+</li>
+<li>
+<a class="flex items-center px-3 py-2 rounded-DEFAULT text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="mail">mail</span>
+                    Invitations
+                </a>
+</li>
+<li>
+<a class="flex items-center px-3 py-2 rounded-DEFAULT text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="history">history</span>
+                    Audit Logs
+                </a>
+</li>
+<li>
+<a class="flex items-center px-3 py-2 rounded-DEFAULT text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="settings">settings</span>
+                    Settings
+                </a>
+</li>
+</ul>
+</nav>
+<!-- TopNavBar -->
+<header class="flex items-center justify-between px-6 h-16 w-full border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-0 z-40 md:ml-60 font-sans text-sm">
+<div class="flex items-center flex-1">
+<!-- Search would go here based on JSON 'on_left' -->
+</div>
+<div class="flex items-center space-x-4">
+<button class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-opacity duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-opacity duration-150">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
+<button class="flex items-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-50 transition-opacity duration-150">
+<span class="mr-2">Organization Switcher</span>
+<img alt="User avatar" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-700" data-alt="Close up portrait of a professional businessman in a bright office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxAdxRyFSbdAOIFEYpABp4Q3zraudOYA2aKkHyvmiwnaSSk3ItwU161kILldlZxeeniUsPrezi_k2uSpTmuus8USPYMVfDyVMfcVG7x6lKwqkv2FqEiVIt_QG_ENpAiMcChPSeUMO7PbcmNhKc5SmwB7hWyd5XcehM9RT3zd8XeDusgr3PfGlQTVLvqQt49sEeg8bdkyf8tMJ7fM7tBy90TsB_mJCGyecAn7b5ZZSqsWYZTf5nQzvYaic1h2B-Jg4OJG9DHv9fJ4tP"/>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="md:ml-60 p-lg max-w-7xl mx-auto">
+<div class="flex justify-between items-center mb-lg">
+<div>
+<h1 class="font-headline-md text-headline-md text-slate-900">Members</h1>
+<p class="font-body-md text-body-md text-slate-500 mt-1">Manage your team and their access levels.</p>
+</div>
+<button class="bg-primary-container text-white px-4 py-2 rounded-DEFAULT font-title-sm text-title-sm hover:opacity-90 transition-opacity flex items-center">
+<span class="material-symbols-outlined mr-2 text-sm" data-icon="add">add</span>
+                Invite Member
+            </button>
+</div>
+<!-- Data Table Container -->
+<div class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-[0px_4px_6px_rgba(0,0,0,0.02)]">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 border-b border-slate-200 font-label-caps text-label-caps text-slate-500 uppercase">
+<th class="py-3 px-md font-semibold">User</th>
+<th class="py-3 px-md font-semibold">Role</th>
+<th class="py-3 px-md font-semibold">Status</th>
+<th class="py-3 px-md font-semibold">Last Active</th>
+<th class="py-3 px-md font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-slate-700">
+<!-- Row 1 -->
+<tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+<td class="py-3 px-md">
+<div class="flex items-center">
+<div class="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-semibold mr-3">
+                                    SJ
+                                </div>
+<div>
+<div class="font-medium text-slate-900">Sarah Jenkins</div>
+<div class="text-slate-500 text-xs mt-0.5">sarah.j@tenantkit.com</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800">
+                                OWNER
+                            </span>
+</td>
+<td class="py-3 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                                Active
+                            </span>
+</td>
+<td class="py-3 px-md text-slate-500">Just now</td>
+<td class="py-3 px-md text-right">
+<button class="text-slate-400 hover:text-slate-600">
+<span class="material-symbols-outlined text-sm" data-icon="more_horiz">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+<td class="py-3 px-md">
+<div class="flex items-center">
+<div class="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-semibold mr-3">
+                                    MR
+                                </div>
+<div>
+<div class="font-medium text-slate-900">Marcus Reed</div>
+<div class="text-slate-500 text-xs mt-0.5">m.reed@tenantkit.com</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                                ADMIN
+                            </span>
+</td>
+<td class="py-3 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                                Active
+                            </span>
+</td>
+<td class="py-3 px-md text-slate-500">2 hours ago</td>
+<td class="py-3 px-md text-right">
+<button class="text-slate-400 hover:text-slate-600">
+<span class="material-symbols-outlined text-sm" data-icon="more_horiz">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+<td class="py-3 px-md">
+<div class="flex items-center">
+<div class="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-semibold mr-3">
+                                    EL
+                                </div>
+<div>
+<div class="font-medium text-slate-900">Elena Lopez</div>
+<div class="text-slate-500 text-xs mt-0.5">elena.l@tenantkit.com</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                MEMBER
+                            </span>
+</td>
+<td class="py-3 px-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">
+                                Pending
+                            </span>
+</td>
+<td class="py-3 px-md text-slate-500">Never</td>
+<td class="py-3 px-md text-right">
+<button class="text-slate-400 hover:text-slate-600">
+<span class="material-symbols-outlined text-sm" data-icon="more_horiz">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</main>
+</body></html>

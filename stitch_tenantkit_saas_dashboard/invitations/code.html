@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Invitations - TenantKit Lite</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#f7f9fb",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface": "#f7f9fb",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "on-primary-container": "#8590a6",
+                        "tertiary-fixed-dim": "#ddc39d",
+                        "on-surface": "#191c1e",
+                        "surface-dim": "#d8dadc",
+                        "inverse-on-surface": "#eff1f3",
+                        "primary-fixed": "#d8e3fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#54647a",
+                        "primary-fixed-dim": "#bcc7de",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#091426",
+                        "secondary-container": "#d0e1fb",
+                        "on-surface-variant": "#45474c",
+                        "secondary": "#505f76",
+                        "on-secondary-fixed": "#0b1c30",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#35260c",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "inverse-primary": "#bcc7de",
+                        "tertiary": "#1e1200",
+                        "surface-container": "#eceef0",
+                        "surface-variant": "#e0e3e5",
+                        "on-tertiary-fixed": "#271902",
+                        "outline": "#75777d",
+                        "primary-container": "#1e293b",
+                        "on-background": "#191c1e",
+                        "outline-variant": "#c5c6cd",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#fadfb8",
+                        "surface-tint": "#545f73",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-tertiary-fixed-variant": "#564427",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-container": "#a38c6a",
+                        "on-primary-fixed": "#111c2d"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "lg": "24px",
+                        "container-margin": "40px",
+                        "gutter": "20px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "xs": "4px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Inter"],
+                        "title-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    fontSize: {
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-sm": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "display-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex">
+<!-- SideNavBar (Shared Component) -->
+<nav class="fixed left-0 top-0 bottom-0 flex flex-col p-4 w-60 border-r bg-surface border-outline-variant z-50">
+<div class="mb-8 px-4">
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">TenantKit Lite</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Property Management</p>
+</div>
+<ul class="flex flex-col gap-1 flex-1">
+<!-- Dashboard -->
+<li>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200 ease-in-out font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<!-- Projects -->
+<li>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200 ease-in-out font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">tactic</span>
+                    Projects
+                </a>
+</li>
+<!-- Members -->
+<li>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200 ease-in-out font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+                    Members
+                </a>
+</li>
+<!-- Invitations (ACTIVE) -->
+<li>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg bg-surface-container-high text-on-surface font-semibold transition-colors duration-200 ease-in-out font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">mail</span>
+                    Invitations
+                </a>
+</li>
+<!-- Audit Logs -->
+<li>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200 ease-in-out font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">history</span>
+                    Audit Logs
+                </a>
+</li>
+<!-- Settings -->
+<li>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors duration-200 ease-in-out font-title-sm text-title-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                    Settings
+                </a>
+</li>
+</ul>
+</nav>
+<!-- Main Content Area -->
+<div class="ml-60 flex-1 flex flex-col min-h-screen w-full relative">
+<!-- TopNavBar (Shared Component) -->
+<header class="h-16 w-full border-b border-outline-variant bg-surface-container-lowest flex items-center justify-between px-6 sticky top-0 z-40">
+<!-- Search (Left) -->
+<div class="flex items-center bg-surface-container-low rounded-lg px-3 py-1.5 border border-outline-variant/30 w-64 focus-within:border-primary-container focus-within:ring-1 focus-within:ring-primary-container transition-all">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-2">search</span>
+<input class="bg-transparent border-none outline-none focus:ring-0 p-0 text-body-sm font-body-sm text-on-surface w-full placeholder-on-surface-variant" placeholder="Search..." type="text"/>
+</div>
+<!-- Actions (Right) -->
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-1 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-1 rounded-full hover:bg-surface-container">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-6 w-px bg-outline-variant mx-1"></div>
+<button class="flex items-center gap-2 text-on-surface hover:bg-surface-container px-2 py-1 rounded-lg transition-colors">
+<span class="font-body-sm text-body-sm font-medium">Acme Corp</span>
+<span class="material-symbols-outlined text-[16px]">unfold_more</span>
+</button>
+<img alt="User avatar" class="w-8 h-8 rounded-full border border-outline-variant object-cover ml-2" data-alt="Minimalist abstract geometric user avatar with neutral slate tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbKTKRD8jfGt7HBlY-aDiCH4tKncMuZRWfKr9Ivdl3FVjqNwgUFxuKqVVvDJ3XKrkHCtbSS5HINenSbRzMXEdUMWW1k27nQogP_jJluvFjvNpNxbpntgbHCMZDzNAB0m9gK0ZQx2RDovKA-A4vzzt_KkB1B7KJ8P8w3FEHeDyF310nvUdUSHnwHSjYP9CUjWf4Mv3s1q9hLAh3FmPUfIqmXlf70YoKR9ySIrb9b1VcMC6zbGuLovg9VcX_O1tj-MH0NyV70YcVJplD"/>
+</div>
+</header>
+<!-- Page Canvas -->
+<main class="flex-1 p-lg max-w-[1200px] w-full mx-auto">
+<!-- Page Header -->
+<div class="flex items-center justify-between mb-lg">
+<div>
+<h2 class="font-display-lg text-display-lg text-on-surface tracking-tight">Pending Invitations</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage outstanding access requests to your organization.</p>
+</div>
+<button class="bg-primary-container text-on-primary hover:bg-primary-container/90 transition-colors px-4 py-2.5 rounded-lg font-title-sm text-title-sm flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Invite Member
+                </button>
+</div>
+<!-- Data Table Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-[0px_4px_6px_rgba(0,0,0,0.02)]">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Email Address</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Assigned Role</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Invited On</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant bg-surface-container-lowest">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="p-md font-body-md text-body-md text-on-surface font-medium">
+                                sarah.jenkins@example.com
+                            </td>
+<td class="p-md font-body-md text-body-md text-on-surface-variant">
+                                Property Manager
+                            </td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-caps text-label-caps border border-outline-variant/30">
+<span class="w-1.5 h-1.5 rounded-full bg-outline mr-1.5"></span>
+                                    Pending
+                                </span>
+</td>
+<td class="p-md font-body-md text-body-md text-on-surface-variant">
+                                Oct 24, 2023
+                            </td>
+<td class="p-md text-right flex items-center justify-end gap-2">
+<button class="text-on-surface-variant hover:text-on-surface px-3 py-1.5 rounded border border-transparent hover:border-outline-variant hover:bg-surface-container-lowest transition-all font-body-sm text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">send</span>
+                                    Resend
+                                </button>
+<button class="text-error hover:text-on-error-container px-3 py-1.5 rounded border border-transparent hover:border-error-container hover:bg-error-container/20 transition-all font-body-sm text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+                                    Cancel
+                                </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="p-md font-body-md text-body-md text-on-surface font-medium">
+                                m.chen@maintenance-pros.com
+                            </td>
+<td class="p-md font-body-md text-body-md text-on-surface-variant">
+                                Maintenance Staff
+                            </td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-caps text-label-caps border border-outline-variant/30">
+<span class="w-1.5 h-1.5 rounded-full bg-outline mr-1.5"></span>
+                                    Pending
+                                </span>
+</td>
+<td class="p-md font-body-md text-body-md text-on-surface-variant">
+                                Oct 22, 2023
+                            </td>
+<td class="p-md text-right flex items-center justify-end gap-2">
+<button class="text-on-surface-variant hover:text-on-surface px-3 py-1.5 rounded border border-transparent hover:border-outline-variant hover:bg-surface-container-lowest transition-all font-body-sm text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">send</span>
+                                    Resend
+                                </button>
+<button class="text-error hover:text-on-error-container px-3 py-1.5 rounded border border-transparent hover:border-error-container hover:bg-error-container/20 transition-all font-body-sm text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+                                    Cancel
+                                </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="p-md font-body-md text-body-md text-on-surface font-medium">
+                                alex.rivera@investments-llc.com
+                            </td>
+<td class="p-md font-body-md text-body-md text-on-surface-variant">
+                                Owner / Investor
+                            </td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-error-container/50 text-on-error-container font-label-caps text-label-caps border border-error-container">
+<span class="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span>
+                                    Expired
+                                </span>
+</td>
+<td class="p-md font-body-md text-body-md text-on-surface-variant">
+                                Sep 15, 2023
+                            </td>
+<td class="p-md text-right flex items-center justify-end gap-2">
+<button class="text-on-surface-variant hover:text-on-surface px-3 py-1.5 rounded border border-transparent hover:border-outline-variant hover:bg-surface-container-lowest transition-all font-body-sm text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">autorenew</span>
+                                    Renew Invite
+                                </button>
+<button class="text-error hover:text-on-error-container px-3 py-1.5 rounded border border-transparent hover:border-error-container hover:bg-error-container/20 transition-all font-body-sm text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">delete</span>
+                                    Remove
+                                </button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Table Footer / Pagination Minimal -->
+<div class="border-t border-outline-variant bg-surface-container-lowest p-md flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<span>Showing 3 pending invitations</span>
+<div class="flex items-center gap-4">
+<button class="text-outline hover:text-on-surface transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+<button class="text-on-surface hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
