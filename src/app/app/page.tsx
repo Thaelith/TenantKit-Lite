@@ -24,12 +24,19 @@ export default async function AppOverviewPage() {
     }
   });
 
+  const recentLogsCount = await prisma.auditLog.count({
+    where: {
+      organizationId: orgId,
+      createdAt: { gt: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Last 24 hours
+    }
+  });
+
   return (
     <>
       <div className="mb-6">
         <h2 className="text-display-lg text-on-surface mb-2">Overview</h2>
         <p className="text-body-md text-on-surface-variant">
-          Here's what's happening in {org.name} today.
+          Here&apos;s what&apos;s happening in {org.name} today.
         </p>
       </div>
 
@@ -61,13 +68,13 @@ export default async function AppOverviewPage() {
           </div>
         </Card>
         
-        <Card className="flex flex-col justify-between opacity-60">
+        <Card className="flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <span className="text-label-caps text-on-surface-variant uppercase tracking-wider">Recent Activity</span>
             <History className="h-5 w-5 text-on-surface-variant" />
           </div>
-          <div className="text-display-lg text-on-surface mb-1">--</div>
-          <div className="text-body-sm text-on-surface-variant">(Coming Soon)</div>
+          <div className="text-display-lg text-on-surface mb-1">{recentLogsCount}</div>
+          <div className="text-body-sm text-on-surface-variant">Actions today</div>
         </Card>
       </div>
     </>

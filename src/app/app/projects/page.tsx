@@ -23,7 +23,7 @@ export default async function ProjectsPage() {
         </div>
         <h2 className="text-display-lg text-on-surface mb-2">No Projects</h2>
         <p className="text-body-md text-on-surface-variant max-w-sm mx-auto mb-6">
-          Get started by creating your first project. Projects help you organize your team's work.
+          Get started by creating your first project. Projects help you organize your team&apos;s work.
         </p>
         {canManage && (
           <Link href="/app/projects/new">

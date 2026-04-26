@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { canManageMembers, canInviteRole, canRemoveMember, requirePermission } from "@/lib/permissions";
 import crypto from "crypto";
+import { createAuditLog } from "@/lib/audit";
 
 const inviteSchema = z.object({
   email: z.string().email("Invalid email address").max(255),
@@ -59,7 +60,7 @@ export async function createInvitation(formData: FormData) {
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + expiresDays);
 
-  await prisma.invitation.create({
+  const invitation = await prisma.invitation.create({
     data: {
       email: parsed.email,
       role: parsed.role,
@@ -68,6 +69,15 @@ export async function createInvitation(formData: FormData) {
       invitedById: membership.userId,
       expiresAt,
     },
+  });
+
+  await createAuditLog({
+    action: "INVITATION_CREATED",
+    entityType: "Invitation",
+    entityId: invitation.id,
+    metadata: { email: parsed.email, role: parsed.role },
+    organizationId: membership.organizationId,
+    actorId: membership.userId,
   });
 
   revalidatePath("/app/members");
@@ -100,6 +110,15 @@ export async function revokeInvitation(formData: FormData) {
     data: { status: "REVOKED" },
   });
 
+  await createAuditLog({
+    action: "INVITATION_REVOKED",
+    entityType: "Invitation",
+    entityId: invite.id,
+    metadata: { email: invite.email, role: invite.role },
+    organizationId: membership.organizationId,
+    actorId: membership.userId,
+  });
+
   revalidatePath("/app/members");
 }
 
@@ -128,6 +147,15 @@ export async function removeMember(formData: FormData) {
 
   await prisma.membership.delete({
     where: { id: targetMembership.id },
+  });
+
+  await createAuditLog({
+    action: "MEMBER_REMOVED",
+    entityType: "Membership",
+    entityId: targetMembership.id,
+    metadata: { userId: targetMembership.userId, role: targetMembership.role },
+    organizationId: membership.organizationId,
+    actorId: membership.userId,
   });
 
   revalidatePath("/app/members");

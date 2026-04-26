@@ -76,29 +76,33 @@ await prisma.project.findFirst({
 });
 ```
 
-## Current Phase: Phase 6 (Invitations & Member Management)
+## Current Phase: Phase 8 (Testing)
 
-TenantKit Lite is an open-source B2B SaaS starter. Phase 6 introduces the ability for users to invite new members to their workspace.
+TenantKit Lite is an open-source B2B SaaS starter. Phase 8 implements unit testing infrastructure.
 
-### Recent Additions (Phase 6)
-1. **Invite UI**: Built `/app/members/invite` form allowing Owners and Admins to invite users. Target role options (`ADMIN` vs `MEMBER`) are dynamically limited based on the inviter's role.
-2. **Server Actions**: Hardened `createInvitation`, `revokeInvitation`, `removeMember`, and `acceptInvitation` actions using central permissions checking.
-3. **Acceptance Route**: `/invite/[token]` elegantly handles invalid tokens, expired tokens, mapping logged-out users to `/login?callbackUrl=...`, mapping logged-in user mismatches, and fulfilling valid invitation acceptances via a Prisma transaction.
-4. **Member Management**: Updated `MembersPage` to show currently active pending invites, a Copy Link button (client component), Revocation capability, and active member deletion abilities.  
+### Recent Additions (Phase 8)
+1. **Vitest Integration**: Installed Vitest and configured test scripts for blazing fast evaluations.
+2. **Security Testing**: Wrote dedicated `permissions.test.ts` focusing extensively on validating Role-Based Access Control mapping blocks (such as checking `isOwner` and verifying isolation for `ADMIN` and `MEMBER` users).
+3. **Data Verification Modules**: Extracted pure validation logic from `project-actions.ts` into a testable `isolation-logic.ts`. Additionally extracted pure validation rules regarding token expirations and email mismatches within user invitation hooks logically verified by `invitation.test.ts`. 
+4. **Mocked Services Testing**: Configured `audit.test.ts` wrapping around `vi.mock` validating that missing JSON dependencies log correctly, and errors generated don't structurally block app functions on a fallback.
 
-### Manual Testing Phase 6 (Invitations)
-1. Ensure your test user has an `OWNER` role inside Prisma Studio.
-2. Go to `/app/members` and click **Invite Member**.
-3. Type an email address (e.g., `teammate@example.com`) and choose the `MEMBER` role. Save.
-4. You will see a new **Pending Invitations** section appear. Hover over the user side area and click the **Link Icon** to copy the invite URL.
-5. Log out of the current application.
-6. Register a new user utilizing the exact email address you just invited (`teammate@example.com`).
-7. Once registered, paste and visit the invite URL. Alternatively, visit the link *before* registering (it will bounce you to log in first).
-8. Click "Accept Invitation" on the final prompt screen.
-9. You are now inside the workspace! Try interacting with projects as the `MEMBER` user.
+### Testing Scope
+* **Covered**: Essential business logic (`lib/permissions.ts`, `lib/audit.ts`, `lib/isolation-logic.ts`, `lib/invitation-logic.ts`). These focus strictly on tenant isolation, role barriers, parsing security, and failing gracefully.
+* **Intentionally Not Covered**: React components or purely UI-focused snapshot workflows (e.g. `layout.tsx`, `page.tsx`). End-to-end tests requiring deep DB integration are skipped for now to avoid brittle CI pipelines. Standard API routes returning JSON or generic DB mutations that rely heavily on NextAuth contexts avoid complex mock boilerplate overhead in favor of pure utility abstractions.
 
-### What's Next (Phase 7)
-Phase 7 will focus on **Audit logging**. We will intercept key mutation events (such as project creation, invitations sent, organization settings changes) and log them chronologically for the workspace.
+### Running Tests
+Ensure dependencies are fully installed, then run:
+
+```bash
+# Execute integration sweeps
+npm run test
+
+# Run and remain listening
+npm run test:watch 
+```
+
+### What's Next (Phase 9)
+Phase 9 will focus on **GitHub Actions CI**. We will integrate automated testing flows so that PRs validate code format, logic abstractions, and project building automatically.
 
 - Node.js 18+
 - npm 9+
@@ -193,8 +197,8 @@ The interface follows a clean, professional B2B design system called "Slate & Sn
 | 4 | Tenant-scoped project CRUD | ✅ Complete |
 | 5 | Role-based access control enforcement | ✅ Complete |
 | 6 | Member invitation workflow | ✅ Complete |
-| 7 | Audit logging | Upcoming |
-| 8 | Testing (Vitest, React Testing Library) | Upcoming |
+| 7 | Audit logging | ✅ Complete |
+| 8 | Testing (Vitest, React Testing Library) | ✅ Complete |
 | 9 | GitHub Actions CI | Upcoming |
 | 10 | Integrations & further refinements | Upcoming |
 

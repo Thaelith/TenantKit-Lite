@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { validateInvitationAcceptance } from "@/lib/invitation-logic";
 
 export async function acceptInvitation(token: string) {
   const user = await getCurrentUser();
@@ -16,21 +17,15 @@ export async function acceptInvitation(token: string) {
     where: { token },
   });
 
-  if (!invitation) throw new Error("Invitation not found");
-  if (invitation.status !== "PENDING") throw new Error("Invitation is no longer valid");
-  if (new Date() > new Date(invitation.expiresAt)) throw new Error("Invitation expired");
-  if (user.email !== invitation.email) {
-    throw new Error("You must be logged in as the invited user to accept this invitation.");
-  }
+  const existingMembership = invitation
+    ? await prisma.membership.findFirst({
+        where: { userId: user.id, organizationId: invitation.organizationId },
+      })
+    : null;
 
-  // Ensure user doesn't already have membership
-  const existingMembership = await prisma.membership.findFirst({
-    where: { userId: user.id, organizationId: invitation.organizationId },
-  });
+  validateInvitationAcceptance(user, invitation, existingMembership);
 
-  if (existingMembership) {
-    throw new Error("You are already a member of this organization.");
-  }
+  if (!invitation) return; // TS guard, already thrown above
 
   // Use a transaction if possible, or sequential updates
   await prisma.$transaction([
@@ -44,6 +39,15 @@ export async function acceptInvitation(token: string) {
     prisma.invitation.update({
       where: { id: invitation.id },
       data: { status: "ACCEPTED" },
+    }),
+    prisma.auditLog.create({
+      data: {
+        action: "INVITATION_ACCEPTED",
+        entityType: "Membership",
+        metadataJson: JSON.stringify({ email: user.email, role: invitation.role }),
+        organizationId: invitation.organizationId,
+        actorId: user.id,
+      },
     }),
   ]);
 

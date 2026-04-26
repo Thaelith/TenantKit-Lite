@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser, requireOrganizationAccess } from "@/lib/session";
 import { SidebarNav } from "@/components/SidebarNav";
-import { Layers, ChevronDown, Bell, HelpCircle } from "lucide-react";
+import { Layers, Bell, HelpCircle } from "lucide-react";
 import { LogoutButton } from "@/components/LogoutButton";
-import Image from "next/image";
 
 export default async function AppLayout({
   children,

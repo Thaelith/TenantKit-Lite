@@ -6,6 +6,8 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { canManageProjects, requirePermission } from "@/lib/permissions";
+import { createAuditLog } from "@/lib/audit";
+import { validateProjectOwnership } from "@/lib/isolation-logic";
 
 const projectSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
@@ -27,13 +29,22 @@ export async function createProject(formData: FormData) {
 
   const parsed = projectSchema.parse(raw);
 
-  await prisma.project.create({
+  const project = await prisma.project.create({
     data: {
       name: parsed.name,
       description: parsed.description || null,
       organizationId: membership.organizationId,
       createdById: membership.userId,
     },
+  });
+
+  await createAuditLog({
+    action: "PROJECT_CREATED",
+    entityType: "Project",
+    entityId: project.id,
+    metadata: { name: project.name },
+    organizationId: membership.organizationId,
+    actorId: membership.userId,
   });
 
   revalidatePath("/app");
@@ -59,7 +70,9 @@ export async function updateProject(id: string, formData: FormData) {
     where: { id, organizationId: membership.organizationId },
   });
 
-  if (!project) throw new Error("Project not found or unauthorized");
+  validateProjectOwnership(project?.organizationId, membership.organizationId);
+
+  const oldData = { name: project!.name, description: project!.description };
 
   await prisma.project.update({
     where: { id },
@@ -67,6 +80,15 @@ export async function updateProject(id: string, formData: FormData) {
       name: parsed.name,
       description: parsed.description || null,
     },
+  });
+
+  await createAuditLog({
+    action: "PROJECT_UPDATED",
+    entityType: "Project",
+    entityId: id,
+    metadata: { old: oldData, new: parsed },
+    organizationId: membership.organizationId,
+    actorId: membership.userId,
   });
 
   revalidatePath("/app");
@@ -87,10 +109,19 @@ export async function deleteProject(formData: FormData) {
     where: { id, organizationId: membership.organizationId },
   });
 
-  if (!project) throw new Error("Project not found or unauthorized");
+  validateProjectOwnership(project?.organizationId, membership.organizationId);
 
   await prisma.project.delete({
     where: { id },
+  });
+
+  await createAuditLog({
+    action: "PROJECT_DELETED",
+    entityType: "Project",
+    entityId: id,
+    metadata: { name: project!.name },
+    organizationId: membership.organizationId,
+    actorId: membership.userId,
   });
 
   revalidatePath("/app");

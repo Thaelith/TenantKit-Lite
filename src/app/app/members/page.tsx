@@ -2,7 +2,7 @@ import { requireOrganizationAccess } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Users, Mail, Plus, X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { CopyInviteLink } from "@/components/CopyInviteLink";

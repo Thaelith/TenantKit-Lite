@@ -24,6 +24,10 @@ export function canManageMembers(role: string): boolean {
   return isOwner(role) || isAdmin(role);
 }
 
+export function canViewAuditLogs(role: string): boolean {
+  return isOwner(role) || isAdmin(role);
+}
+
 export function canInviteRole(actorRole: string, targetRole: string): boolean {
   if (isOwner(actorRole)) {
     return targetRole === "ADMIN" || targetRole === "MEMBER";
