@@ -18,6 +18,7 @@ import {
   LogIn,
   UserPlus,
 } from "lucide-react";
+import { LogoutButton } from "@/components/LogoutButton";
 import { getCurrentUser } from "@/lib/session";
 import Link from "next/link";
 
@@ -57,13 +58,16 @@ export default async function HomePage() {
           </nav>
           <div className="hidden sm:flex items-center gap-2">
             {user ? (
-              <Link
-                href="/app"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-body-sm text-on-surface-variant hover:text-on-surface bg-surface-container hover:bg-surface-container-high rounded-md transition-colors"
-              >
-                <LayoutDashboard className="h-4 w-4" />
-                Dashboard
-              </Link>
+              <>
+                <Link
+                  href="/app"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-body-sm text-on-surface-variant hover:text-on-surface bg-surface-container hover:bg-surface-container-high rounded-md transition-colors"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Link>
+                <LogoutButton />
+              </>
             ) : (
               <>
                 <Link

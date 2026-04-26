@@ -46,6 +46,8 @@ npm run seed
 - Admin: `bob@example.com` (Cannot access settings or delete org)
 - Member: `charlie@example.com` (Can only view/edit projects)
 
+> **Troubleshooting Note:** If running `npm run seed` or manually deleting the local database causes a "No organization access" or loop behavior, it means your browser has a stale session cookie for a user that no longer exists in the database. Simply click "Sign out" on the main landing page, or clear your localhost cookies, and log in with the new credentials.
+
 For a guided 5-minute walkthrough, see the [Demo Script](docs/demo-script.md).
 
 ## Screenshots

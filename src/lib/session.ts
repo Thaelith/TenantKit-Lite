@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
 import { prisma } from "./prisma";
+import { redirect } from "next/navigation";
 
 export async function getCurrentUser() {
   const session = await getServerSession(authOptions);
@@ -10,7 +11,7 @@ export async function getCurrentUser() {
 export async function requireAuth() {
   const user = await getCurrentUser();
   if (!user) {
-    throw new Error("Unauthorized");
+    redirect("/login");
   }
   return user;
 }
@@ -29,7 +30,7 @@ export async function getCurrentMembership() {
 export async function requireOrganizationAccess() {
   const membership = await getCurrentMembership();
   if (!membership) {
-    throw new Error("No organization access");
+    redirect("/login?error=no_organization");
   }
   return membership;
 }
