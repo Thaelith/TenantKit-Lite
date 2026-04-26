@@ -1,12 +1,12 @@
 # Screenshots
 
-This folder is reserved for application screenshots.
+This folder contains high-quality application screenshots demonstrating the TenantKit Lite interface.
 
-To add screenshots, capture the following pages and save them here:
-- `landing.png` - The public landing page (`/`).
-- `dashboard.png` - The main organization dashboard (`/app`).
-- `projects.png` - The projects list (`/app/projects`).
-- `members.png` - The members list showing RBAC roles (`/app/members`).
-- `audit-logs.png` - The audit logs table (`/app/audit-logs`).
+### Available Screenshots:
+- `landing.png` - The public landing page showcasing features and open-source status.
+- `dashboard.png` - The main organization dashboard providing a high-level overview.
+- `projects.png` - The projects list demonstrating tenant-scoped resource management.
+- `members.png` - The members list highlighting Role-Based Access Control (RBAC) roles.
+- `audit-logs.png` - The immutable audit logs table recording all critical actions.
 
-Ensure screenshots are 16:9 ratio and highlight the clean UI design.
+*All screenshots are captured at a 1440x900 resolution to highlight the clean B2B UI design built with Tailwind CSS.*

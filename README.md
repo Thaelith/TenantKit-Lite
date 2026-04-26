@@ -52,12 +52,20 @@ For a guided 5-minute walkthrough, see the [Demo Script](docs/demo-script.md).
 
 ## Screenshots
 
-*(Add screenshots of your application here once ready. See `screenshots/README.md` for guidance.)*
-- `screenshots/landing.png`
-- `screenshots/dashboard.png`
-- `screenshots/projects.png`
-- `screenshots/members.png`
-- `screenshots/audit-logs.png`
+### Landing Page
+![TenantKit Lite landing page](screenshots/landing.png)
+
+### Dashboard Overview
+![TenantKit Lite dashboard overview](screenshots/dashboard.png)
+
+### Projects
+![TenantKit Lite projects page](screenshots/projects.png)
+
+### Members
+![TenantKit Lite members page](screenshots/members.png)
+
+### Audit Logs
+![TenantKit Lite audit logs page](screenshots/audit-logs.png)
 
 ## Tech Stack
 
@@ -108,10 +116,10 @@ The schema is built around six core models: `User`, `Organization`, `Membership`
 Every protected resource is strictly scoped by `organizationId`. Queries never rely on route parameters alone — they always verify the current user's membership and permissions in the target organization.
 
 ```ts
-// ❌ Bad — No tenant scope (Vulnerable to IDOR)
+// Bad — No tenant scope (Vulnerable to IDOR)
 await prisma.project.findUnique({ where: { id: projectId } });
 
-// ✅ Good — Strictly scoped by organization
+// Good — Strictly scoped by organization
 await prisma.project.findFirst({
   where: { id: projectId, organizationId },
 });
@@ -183,15 +191,15 @@ Before deploying or finalizing major features, refer to the [Manual QA Checklist
 
 | Phase | Milestone | Status |
 |---|---|---|
-| 1 | Project foundation, Prisma schema, landing page | ✅ Complete |
-| 2 | Authentication (Auth.js, login, register, auto-workspace) | ✅ Complete |
-| 3 | Organization dashboard, settings, members | ✅ Complete |
-| 4 | Tenant-scoped project CRUD | ✅ Complete |
-| 5 | Role-based access control enforcement | ✅ Complete |
-| 6 | Member invitation workflow | ✅ Complete |
-| 7 | Audit logging | ✅ Complete |
-| 8 | Testing (Vitest, validation logic) | ✅ Complete |
-| 9 | CI & GitHub portfolio polish | ✅ Complete |
+| 1 | Project foundation, Prisma schema, landing page | Complete |
+| 2 | Authentication (Auth.js, login, register, auto-workspace) | Complete |
+| 3 | Organization dashboard, settings, members | Complete |
+| 4 | Tenant-scoped project CRUD | Complete |
+| 5 | Role-based access control enforcement | Complete |
+| 6 | Member invitation workflow | Complete |
+| 7 | Audit logging | Complete |
+| 8 | Testing (Vitest, validation logic) | Complete |
+| 9 | CI & GitHub portfolio polish | Complete |
 | 10 | Optional integrations & deployment prep | Upcoming |
 
 ## Security
