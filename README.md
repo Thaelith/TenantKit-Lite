@@ -201,7 +201,6 @@ Before deploying or finalizing major features, refer to the [Manual QA Checklist
 | 8 | Testing (Vitest, validation logic) | Complete |
 | 9 | CI & GitHub portfolio polish | Complete |
 | 10 | Portfolio readiness, seed data, screenshots, docs | Complete |
-| 11 | Future optional improvements (integrations, deployment) | Upcoming |
 
 ## Security
 

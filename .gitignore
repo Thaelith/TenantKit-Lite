@@ -28,7 +28,3 @@ yarn-error.log*
 # misc
 .DS_Store
 *.pem
-
-# project specific
-tenantkit-lite-sqlite-plan.md
-stitch_tenantkit_saas_dashboard/
