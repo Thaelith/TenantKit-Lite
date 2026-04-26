@@ -8,9 +8,17 @@
 
 A production-style multi-tenant SaaS starter built with Next.js, TypeScript, SQLite, Prisma, and robust Role-Based Access Control (RBAC).
 
-## Why TenantKit Lite?
+## Why This Project Exists
 
-Building a real B2B SaaS product requires more than simple CRUD operations — you need tenant isolation, role-based permissions, invitation workflows, and comprehensive audit logging. Most starters skip these fundamental requirements. TenantKit Lite includes them from the start, while keeping local development incredibly simple by relying on SQLite. No Docker or PostgreSQL setup required.
+Many Next.js starter kits provide basic CRUD functionality but fail to address the complex requirements of true B2B SaaS applications. TenantKit Lite was built to demonstrate how to implement fundamental enterprise features—like hard tenant isolation, strict role-based access control, invitation workflows, and immutable audit logging—while keeping local development incredibly simple. It uses a file-based SQLite database so developers can clone, run, and learn without needing Docker or PostgreSQL.
+
+## What This Demonstrates
+
+This repository serves as a portfolio piece showcasing:
+- **Security-First Design:** Structurally preventing Insecure Direct Object Reference (IDOR) attacks through query-level tenant isolation.
+- **Enterprise Capabilities:** Real-world implementations of RBAC and Audit Logging.
+- **Modern React Patterns:** Extensive use of Next.js App Router, Server Components, and Server Actions.
+- **Clean Architecture:** Keeping business logic testable and separated from UI components.
 
 ## Features
 
@@ -25,11 +33,28 @@ Building a real B2B SaaS product requires more than simple CRUD operations — y
 - **Fully Tested** — Unit tests cover critical security, isolation, and RBAC logic using Vitest.
 - **Automated CI** — GitHub Actions workflow ensures lint, build, and tests pass on every pull request.
 
+## Demo & Seed Data
+
+You can quickly populate the database with realistic demo data, including users with different roles, projects, and audit logs.
+
+```bash
+npm run seed
+```
+
+**Demo Credentials (all passwords are `demo123`):**
+- Owner: `alice@example.com` (Full access)
+- Admin: `bob@example.com` (Cannot access settings or delete org)
+- Member: `charlie@example.com` (Can only view/edit projects)
+
+For a guided 5-minute walkthrough, see the [Demo Script](docs/demo-script.md).
+
 ## Screenshots
 
-*(Add screenshots of your application here once ready)*
+*(Add screenshots of your application here once ready. See `screenshots/README.md` for guidance.)*
+- `screenshots/landing.png`
 - `screenshots/dashboard.png`
 - `screenshots/projects.png`
+- `screenshots/members.png`
 - `screenshots/audit-logs.png`
 
 ## Tech Stack
@@ -112,7 +137,7 @@ TenantKit Lite prioritizes logic validation over brittle UI tests. Essential bus
 ## Local Setup
 
 ### Prerequisites
-- Node.js 18+
+- Node.js 20.9+ (Recommended for Next.js 15)
 - npm 9+
 
 ### Installation

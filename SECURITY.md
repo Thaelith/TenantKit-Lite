@@ -1,7 +1,7 @@
 # Security Policy
 
 ## Reporting a Vulnerability
-This project is an open-source B2B SaaS starter. It is provided "as is" without warranty. If you discover a security vulnerability, please open an issue or submit a pull request. (A responsible disclosure email will be added in the future).
+This project is an open-source B2B SaaS starter. It is provided "as is" without warranty. If you discover a security vulnerability, please open an issue or submit a pull request. For vulnerability reports, please use GitHub's private vulnerability reporting feature if it is enabled for this repository. If private vulnerability reporting is not enabled, please open a minimal GitHub issue without sharing exploit details publicly, and the maintainer will provide a secure follow-up channel.
 
 ## Security Principles
 - **No Secrets in Repo:** We never commit `.env` or local databases (`*.db`) to source control.

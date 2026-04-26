@@ -49,7 +49,7 @@ export default async function HomePage() {
               Preview
             </a>
             <a
-              href="https://github.com"
+              href="https://github.com/Thaelith/TenantKit-Lite"
               className="text-body-sm text-on-surface-variant hover:text-on-surface transition-colors"
             >
               GitHub
@@ -106,7 +106,7 @@ export default async function HomePage() {
           </p>
           <div className="mt-8 flex items-center justify-center gap-4">
             <a
-              href="https://github.com"
+              href="https://github.com/Thaelith/TenantKit-Lite"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary rounded-lg text-body-md font-medium hover:bg-primary/90 transition-colors"
             >
               View on GitHub
