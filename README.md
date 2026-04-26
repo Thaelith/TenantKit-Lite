@@ -200,7 +200,8 @@ Before deploying or finalizing major features, refer to the [Manual QA Checklist
 | 7 | Audit logging | Complete |
 | 8 | Testing (Vitest, validation logic) | Complete |
 | 9 | CI & GitHub portfolio polish | Complete |
-| 10 | Optional integrations & deployment prep | Upcoming |
+| 10 | Portfolio readiness, seed data, screenshots, docs | Complete |
+| 11 | Future optional improvements (integrations, deployment) | Upcoming |
 
 ## Security
 
