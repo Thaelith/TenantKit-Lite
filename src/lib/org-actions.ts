@@ -2,13 +2,15 @@
 
 import { requireOrganizationAccess } from "./session";
 import { prisma } from "./prisma";
+import { canManageOrganization, requirePermission } from "./permissions";
 
 export async function updateOrganizationName(formData: FormData) {
   const membership = await requireOrganizationAccess();
   
-  if (membership.role !== "OWNER") {
-    throw new Error("Only an OWNER can update organization settings.");
-  }
+  requirePermission(
+    canManageOrganization(membership.role),
+    "Only an OWNER can update organization settings."
+  );
   
   const orgId = membership.organizationId;
   const newName = formData.get("name") as string;

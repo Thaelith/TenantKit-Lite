@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { canManageProjects, requirePermission } from "@/lib/permissions";
 
 const projectSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
@@ -13,7 +14,11 @@ const projectSchema = z.object({
 
 export async function createProject(formData: FormData) {
   const membership = await requireOrganizationAccess();
-  if (membership.role === "MEMBER") throw new Error("Unauthorized: Only OWNER or ADMIN can create projects");
+  
+  requirePermission(
+    canManageProjects(membership.role),
+    "Unauthorized: Only OWNER or ADMIN can create projects"
+  );
 
   const raw = {
     name: formData.get("name") as string,
@@ -37,7 +42,11 @@ export async function createProject(formData: FormData) {
 
 export async function updateProject(id: string, formData: FormData) {
   const membership = await requireOrganizationAccess();
-  if (membership.role === "MEMBER") throw new Error("Unauthorized: Only OWNER or ADMIN can update projects");
+  
+  requirePermission(
+    canManageProjects(membership.role),
+    "Unauthorized: Only OWNER or ADMIN can update projects"
+  );
 
   const raw = {
     name: formData.get("name") as string,
@@ -46,7 +55,6 @@ export async function updateProject(id: string, formData: FormData) {
 
   const parsed = projectSchema.parse(raw);
 
-  // Tenant scope enforced
   const project = await prisma.project.findFirst({
     where: { id, organizationId: membership.organizationId },
   });
@@ -67,11 +75,14 @@ export async function updateProject(id: string, formData: FormData) {
 
 export async function deleteProject(formData: FormData) {
   const membership = await requireOrganizationAccess();
-  if (membership.role === "MEMBER") throw new Error("Unauthorized: Only OWNER or ADMIN can delete projects");
+  
+  requirePermission(
+    canManageProjects(membership.role),
+    "Unauthorized: Only OWNER or ADMIN can delete projects"
+  );
 
   const id = formData.get("id") as string;
 
-  // Tenant scope enforced
   const project = await prisma.project.findFirst({
     where: { id, organizationId: membership.organizationId },
   });

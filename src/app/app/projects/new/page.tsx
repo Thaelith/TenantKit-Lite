@@ -5,10 +5,14 @@ import { Input } from "@/components/ui/Input";
 import { createProject } from "../project-actions";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { canManageProjects } from "@/lib/permissions";
 
 export default async function NewProjectPage() {
   const membership = await requireOrganizationAccess();
-  if (membership.role === "MEMBER") redirect("/app/projects");
+  
+  if (!canManageProjects(membership.role)) {
+    redirect("/app/projects");
+  }
 
   return (
     <div className="max-w-2xl mx-auto">

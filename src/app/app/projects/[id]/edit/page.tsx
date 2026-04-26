@@ -6,11 +6,15 @@ import { Input } from "@/components/ui/Input";
 import { updateProject, deleteProject } from "../../project-actions";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { canManageProjects } from "@/lib/permissions";
 
 export default async function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const membership = await requireOrganizationAccess();
-  if (membership.role === "MEMBER") redirect("/app/projects");
+  
+  if (!canManageProjects(membership.role)) {
+    redirect("/app/projects");
+  }
 
   const project = await prisma.project.findFirst({
     where: { id, organizationId: membership.organizationId },

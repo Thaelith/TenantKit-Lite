@@ -76,26 +76,29 @@ await prisma.project.findFirst({
 });
 ```
 
-## Current Phase: Phase 4 (Tenant-scoped Projects CRUD)
+## Current Phase: Phase 6 (Invitations & Member Management)
 
-TenantKit Lite is an open-source B2B SaaS starter. Phase 4 introduces tenant-scoped organization projects.
+TenantKit Lite is an open-source B2B SaaS starter. Phase 6 introduces the ability for users to invite new members to their workspace.
 
-### Recent Additions (Phase 4)
-1. **Tenant Access Enforcement**: Server Actions (`createProject`, `updateProject`, `deleteProject`) strictly check `organizationId` and block `MEMBER` roles from mutation actions.
-2. **Project List View**: Users can view all projects belonging to their active workspace at `/app/projects`.
-3. **Creation UI**: New project form with Zod validation.
-4. **Edit & Delete UI**: Dedicated edit view with a Danger Zone for deletions.
-5. **Dashboard Sidebar**: Added Projects icon to SidebarNav.
+### Recent Additions (Phase 6)
+1. **Invite UI**: Built `/app/members/invite` form allowing Owners and Admins to invite users. Target role options (`ADMIN` vs `MEMBER`) are dynamically limited based on the inviter's role.
+2. **Server Actions**: Hardened `createInvitation`, `revokeInvitation`, `removeMember`, and `acceptInvitation` actions using central permissions checking.
+3. **Acceptance Route**: `/invite/[token]` elegantly handles invalid tokens, expired tokens, mapping logged-out users to `/login?callbackUrl=...`, mapping logged-in user mismatches, and fulfilling valid invitation acceptances via a Prisma transaction.
+4. **Member Management**: Updated `MembersPage` to show currently active pending invites, a Copy Link button (client component), Revocation capability, and active member deletion abilities.  
 
-### Manual Testing Phase 4
-1. **Visit `/app/projects`**: You should see an empty state urging you to create a project if none exist.
-2. **Create Project**: Click the button, provide a name/description, and save.
-3. **Verify Overview Metrics**: Go to `/app` dashboard. The `Total Projects` card should reflect the new count.
-4. **Edit Project**: Go back to `/app/projects`, click Edit on the project, update the name, and save.
-5. **Delete Project**: Return to edit, scroll to 'Danger Zone', and click Delete. The project should vanish.
+### Manual Testing Phase 6 (Invitations)
+1. Ensure your test user has an `OWNER` role inside Prisma Studio.
+2. Go to `/app/members` and click **Invite Member**.
+3. Type an email address (e.g., `teammate@example.com`) and choose the `MEMBER` role. Save.
+4. You will see a new **Pending Invitations** section appear. Hover over the user side area and click the **Link Icon** to copy the invite URL.
+5. Log out of the current application.
+6. Register a new user utilizing the exact email address you just invited (`teammate@example.com`).
+7. Once registered, paste and visit the invite URL. Alternatively, visit the link *before* registering (it will bounce you to log in first).
+8. Click "Accept Invitation" on the final prompt screen.
+9. You are now inside the workspace! Try interacting with projects as the `MEMBER` user.
 
-### What's Next (Phase 5)
-Phase 5 will focus on **Role-based access control enforcement**. We will ensure UI checks perfectly align with server checks and start prepping the application for multi-role workflows.
+### What's Next (Phase 7)
+Phase 7 will focus on **Audit logging**. We will intercept key mutation events (such as project creation, invitations sent, organization settings changes) and log them chronologically for the workspace.
 
 - Node.js 18+
 - npm 9+
@@ -188,8 +191,8 @@ The interface follows a clean, professional B2B design system called "Slate & Sn
 | 2 | Authentication (Auth.js, login, register, auto-workspace) | ✅ Complete |
 | 3 | Organization dashboard, settings, members | ✅ Complete |
 | 4 | Tenant-scoped project CRUD | ✅ Complete |
-| 5 | Role-based access control enforcement | Upcoming |
-| 6 | Member invitation workflow | Upcoming |
+| 5 | Role-based access control enforcement | ✅ Complete |
+| 6 | Member invitation workflow | ✅ Complete |
 | 7 | Audit logging | Upcoming |
 | 8 | Testing (Vitest, React Testing Library) | Upcoming |
 | 9 | GitHub Actions CI | Upcoming |

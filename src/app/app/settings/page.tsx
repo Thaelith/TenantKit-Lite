@@ -4,11 +4,12 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { revalidatePath } from "next/cache";
+import { canManageOrganization } from "@/lib/permissions";
 
 export default async function SettingsPage() {
   const membership = await requireOrganizationAccess();
   const org = membership.organization;
-  const isOwner = membership.role === "OWNER";
+  const isOwner = canManageOrganization(membership.role);
 
   return (
     <>

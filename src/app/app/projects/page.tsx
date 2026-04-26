@@ -4,10 +4,11 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { FolderOpen, Plus, FileText } from "lucide-react";
+import { canManageProjects } from "@/lib/permissions";
 
 export default async function ProjectsPage() {
   const membership = await requireOrganizationAccess();
-  const isMember = membership.role === "MEMBER";
+  const canManage = canManageProjects(membership.role);
   
   const projects = await prisma.project.findMany({
     where: { organizationId: membership.organizationId },
@@ -24,7 +25,7 @@ export default async function ProjectsPage() {
         <p className="text-body-md text-on-surface-variant max-w-sm mx-auto mb-6">
           Get started by creating your first project. Projects help you organize your team's work.
         </p>
-        {!isMember && (
+        {canManage && (
           <Link href="/app/projects/new">
             <Button>
               <Plus className="h-4 w-4" />
@@ -45,7 +46,7 @@ export default async function ProjectsPage() {
             Manage projects in {membership.organization.name}.
           </p>
         </div>
-        {!isMember && (
+        {canManage && (
           <Link href="/app/projects/new">
             <Button>
               <Plus className="h-4 w-4" />
@@ -73,7 +74,7 @@ export default async function ProjectsPage() {
               <span className="text-label-caps text-on-surface-variant">
                 Updated {new Date(project.updatedAt).toLocaleDateString()}
               </span>
-              {!isMember && (
+              {canManage && (
                 <Link href={`/app/projects/${project.id}/edit`} className="text-body-sm font-medium text-primary hover:text-primary/80 transition-colors">
                   Edit
                 </Link>

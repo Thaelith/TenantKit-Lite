@@ -16,6 +16,14 @@ export default async function AppOverviewPage() {
     where: { organizationId: orgId },
   });
 
+  const pendingInvitesCount = await prisma.invitation.count({
+    where: { 
+      organizationId: orgId, 
+      status: "PENDING", 
+      expiresAt: { gt: new Date() } 
+    }
+  });
+
   return (
     <>
       <div className="mb-6">
@@ -42,13 +50,15 @@ export default async function AppOverviewPage() {
           <div className="text-display-lg text-on-surface mb-1">{projectCount}</div>
         </Card>
         
-        <Card className="flex flex-col justify-between opacity-60">
+        <Card className="flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <span className="text-label-caps text-on-surface-variant uppercase tracking-wider">Pending Invites</span>
             <Mail className="h-5 w-5 text-on-surface-variant" />
           </div>
-          <div className="text-display-lg text-on-surface mb-1">--</div>
-          <div className="text-body-sm text-on-surface-variant">(Coming Soon)</div>
+          <div className="text-display-lg text-on-surface mb-1">{pendingInvitesCount}</div>
+          <div className="text-body-sm text-on-surface-variant">
+             {pendingInvitesCount === 1 ? 'Needs response' : 'Awaiting responses'}
+          </div>
         </Card>
         
         <Card className="flex flex-col justify-between opacity-60">
