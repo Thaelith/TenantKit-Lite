@@ -1,78 +1,65 @@
-import { Layers } from "lucide-react";
+import { requireOrganizationAccess } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { LogoutButton } from "@/components/LogoutButton";
+import { FolderOpen, Users, Mail, History } from "lucide-react";
 
-export default async function AppPage() {
-  const user = await getCurrentUser();
+export default async function AppOverviewPage() {
+  const membership = await requireOrganizationAccess();
+  const orgId = membership.organizationId;
+  const org = membership.organization;
 
-  if (!user) {
-    return null;
-  }
+  const memberCount = await prisma.membership.count({
+    where: { organizationId: orgId },
+  });
 
-  const memberships = await prisma.membership.findMany({
-    where: { userId: user.id },
-    include: { organization: true },
+  const projectCount = await prisma.project.count({
+    where: { organizationId: orgId },
   });
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-outline-variant bg-surface-container-lowest">
-        <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Layers className="h-5 w-5 text-primary" />
-            <span className="text-title-sm text-on-surface font-semibold">
-              TenantKit Lite
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            {user.name && (
-              <span className="text-body-sm text-on-surface-variant">
-                {user.name}
-              </span>
-            )}
-            <LogoutButton />
-          </div>
-        </div>
-      </header>
+    <>
+      <div className="mb-6">
+        <h2 className="text-display-lg text-on-surface mb-2">Overview</h2>
+        <p className="text-body-md text-on-surface-variant">
+          Here's what's happening in {org.name} today.
+        </p>
+      </div>
 
-      <main className="max-w-4xl mx-auto px-6 py-12">
-        <div className="mb-8">
-          <h1 className="text-display-lg text-on-surface mb-2">
-            Welcome{user.name ? `, ${user.name}` : ""}
-          </h1>
-          <p className="text-body-md text-on-surface-variant">
-            Your dashboard will appear here in a future phase.
-          </p>
-        </div>
-
-        {memberships.length > 0 && (
-          <div>
-            <h2 className="text-title-sm text-on-surface mb-3">
-              Your Organizations
-            </h2>
-            <div className="grid gap-4">
-              {memberships.map((m) => (
-                <Card key={m.id} padding="md">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-body-md text-on-surface font-medium">
-                        {m.organization.name}
-                      </p>
-                      <p className="text-body-sm text-on-surface-variant mt-0.5">
-                        {m.organization.slug}
-                      </p>
-                    </div>
-                    <Badge variant="owner">{m.role}</Badge>
-                  </div>
-                </Card>
-              ))}
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <Card className="flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-label-caps text-on-surface-variant uppercase tracking-wider">Total Members</span>
+            <Users className="h-5 w-5 text-on-surface-variant" />
           </div>
-        )}
-      </main>
-    </div>
+          <div className="text-display-lg text-on-surface mb-1">{memberCount}</div>
+        </Card>
+        
+        <Card className="flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-label-caps text-on-surface-variant uppercase tracking-wider">Total Projects</span>
+            <FolderOpen className="h-5 w-5 text-on-surface-variant" />
+          </div>
+          <div className="text-display-lg text-on-surface mb-1">{projectCount}</div>
+        </Card>
+        
+        <Card className="flex flex-col justify-between opacity-60">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-label-caps text-on-surface-variant uppercase tracking-wider">Pending Invites</span>
+            <Mail className="h-5 w-5 text-on-surface-variant" />
+          </div>
+          <div className="text-display-lg text-on-surface mb-1">--</div>
+          <div className="text-body-sm text-on-surface-variant">(Coming Soon)</div>
+        </Card>
+        
+        <Card className="flex flex-col justify-between opacity-60">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-label-caps text-on-surface-variant uppercase tracking-wider">Recent Activity</span>
+            <History className="h-5 w-5 text-on-surface-variant" />
+          </div>
+          <div className="text-display-lg text-on-surface mb-1">--</div>
+          <div className="text-body-sm text-on-surface-variant">(Coming Soon)</div>
+        </Card>
+      </div>
+    </>
   );
 }

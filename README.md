@@ -76,9 +76,26 @@ await prisma.project.findFirst({
 });
 ```
 
-## Getting Started
+## Current Phase: Phase 4 (Tenant-scoped Projects CRUD)
 
-### Prerequisites
+TenantKit Lite is an open-source B2B SaaS starter. Phase 4 introduces tenant-scoped organization projects.
+
+### Recent Additions (Phase 4)
+1. **Tenant Access Enforcement**: Server Actions (`createProject`, `updateProject`, `deleteProject`) strictly check `organizationId` and block `MEMBER` roles from mutation actions.
+2. **Project List View**: Users can view all projects belonging to their active workspace at `/app/projects`.
+3. **Creation UI**: New project form with Zod validation.
+4. **Edit & Delete UI**: Dedicated edit view with a Danger Zone for deletions.
+5. **Dashboard Sidebar**: Added Projects icon to SidebarNav.
+
+### Manual Testing Phase 4
+1. **Visit `/app/projects`**: You should see an empty state urging you to create a project if none exist.
+2. **Create Project**: Click the button, provide a name/description, and save.
+3. **Verify Overview Metrics**: Go to `/app` dashboard. The `Total Projects` card should reflect the new count.
+4. **Edit Project**: Go back to `/app/projects`, click Edit on the project, update the name, and save.
+5. **Delete Project**: Return to edit, scroll to 'Danger Zone', and click Delete. The project should vanish.
+
+### What's Next (Phase 5)
+Phase 5 will focus on **Role-based access control enforcement**. We will ensure UI checks perfectly align with server checks and start prepping the application for multi-role workflows.
 
 - Node.js 18+
 - npm 9+
@@ -168,14 +185,15 @@ The interface follows a clean, professional B2B design system called "Slate & Sn
 | Phase | Milestone | Status |
 |---|---|---|
 | 1 | Project foundation, Prisma schema, landing page | ✅ Complete |
-| 2 | Authentication (Auth.js, login, register, auto-workspace) | ✅ Current |
-| 3 | Organization creation, auto-workspace on signup | Upcoming |
-| 4 | Tenant-scoped project CRUD | Upcoming |
+| 2 | Authentication (Auth.js, login, register, auto-workspace) | ✅ Complete |
+| 3 | Organization dashboard, settings, members | ✅ Complete |
+| 4 | Tenant-scoped project CRUD | ✅ Complete |
 | 5 | Role-based access control enforcement | Upcoming |
 | 6 | Member invitation workflow | Upcoming |
 | 7 | Audit logging | Upcoming |
 | 8 | Testing (Vitest, React Testing Library) | Upcoming |
 | 9 | GitHub Actions CI | Upcoming |
+| 10 | Integrations & further refinements | Upcoming |
 
 See `tenantkit-lite-sqlite-plan.md` for the full technical roadmap.
 
