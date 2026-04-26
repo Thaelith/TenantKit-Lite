@@ -1,118 +1,126 @@
 # TenantKit Lite
 
-A production-style multi-tenant SaaS starter built with Next.js, TypeScript, SQLite, Prisma, and role-based access control.
+[![CI Status](https://github.com/Thaelith/TenantKit-Lite/actions/workflows/ci.yml/badge.svg)](https://github.com/Thaelith/TenantKit-Lite/actions)
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-teal)
+![SQLite](https://img.shields.io/badge/SQLite-Local-blue)
+
+A production-style multi-tenant SaaS starter built with Next.js, TypeScript, SQLite, Prisma, and robust Role-Based Access Control (RBAC).
 
 ## Why TenantKit Lite?
 
-Building a real SaaS product requires more than CRUD — you need tenant isolation, role-based permissions, invitation workflows, and audit logging. Most starters skip these. TenantKit Lite includes them from the start, while keeping local development simple with SQLite.
+Building a real B2B SaaS product requires more than simple CRUD operations — you need tenant isolation, role-based permissions, invitation workflows, and comprehensive audit logging. Most starters skip these fundamental requirements. TenantKit Lite includes them from the start, while keeping local development incredibly simple by relying on SQLite. No Docker or PostgreSQL setup required.
 
 ## Features
 
-- **Email/Password Authentication** — Register and login with credentials via Auth.js, bcryptjs password hashing
-- **Auto-Workspace Creation** — New users automatically get a default organization and Owner role
-- **Organizations & Workspaces** — Multi-tenant architecture with unique slugs per organization
-- **Role-Based Access Control** — Three roles (Owner, Admin, Member) with enforced permission checks
-- **Member Invitations** — Token-based invitation flow with expiry and revocation
-- **Tenant-Scoped Resources** — Every query scoped by `organizationId` to prevent cross-tenant access
-- **Audit Logging** — Track organization events with actor, action, entity, and metadata
-- **SQLite + Prisma** — Zero-dependency local database; run without PostgreSQL or Docker
+- **Email/Password Authentication** — Register and login securely with bcryptjs password hashing via Auth.js.
+- **Auto-Workspace Creation** — New sign-ups automatically receive a default organization and the `OWNER` role.
+- **Multi-Tenant Architecture** — Isolated organizations and workspaces with unique slugs.
+- **Role-Based Access Control (RBAC)** — Strictly enforced `OWNER`, `ADMIN`, and `MEMBER` roles.
+- **Member Invitations** — Secure token-based invitation flow to add new members to workspaces.
+- **Tenant-Scoped Resources** — Queries are strictly scoped by `organizationId` to prevent cross-tenant data leaks.
+- **Audit Logging** — Automatic tracking of organization events (actor, action, entity, metadata).
+- **SQLite + Prisma** — Zero-dependency local database for instant setup.
+- **Fully Tested** — Unit tests cover critical security, isolation, and RBAC logic using Vitest.
+- **Automated CI** — GitHub Actions workflow ensures lint, build, and tests pass on every pull request.
+
+## Screenshots
+
+*(Add screenshots of your application here once ready)*
+- `screenshots/dashboard.png`
+- `screenshots/projects.png`
+- `screenshots/audit-logs.png`
 
 ## Tech Stack
 
 | Technology | Purpose |
 |---|---|
 | [Next.js 15](https://nextjs.org) | App Router, server components, API routes |
-| [TypeScript](https://www.typescriptlang.org) | Type safety |
-| [Tailwind CSS](https://tailwindcss.com) | Utility-first styling |
-| [Prisma](https://www.prisma.io) | ORM with type-safe queries |
-| [SQLite](https://www.sqlite.org) | Local-first database (file-based) |
-| [Auth.js](https://authjs.dev) | Authentication (credentials + OAuth) |
-| [Zod](https://zod.dev) | Schema validation |
-| [Lucide React](https://lucide.dev) | Icon library |
+| [TypeScript](https://www.typescriptlang.org) | Type safety and autocompletion |
+| [Tailwind CSS](https://tailwindcss.com) | Utility-first, responsive styling |
+| [Prisma](https://www.prisma.io) | ORM with strongly-typed queries |
+| [SQLite](https://www.sqlite.org) | Local-first, file-based database |
+| [Auth.js](https://authjs.dev) | Authentication (NextAuth v4) |
+| [Zod](https://zod.dev) | Input and API schema validation |
+| [Lucide React](https://lucide.dev) | SVG icon library |
+| [Vitest](https://vitest.dev) | Blazing fast unit testing framework |
 
-## Why SQLite?
+## Architecture Overview
 
-SQLite keeps this starter easy to run locally and easy to review. No database server is required. The app uses Prisma, so the schema can later move to PostgreSQL by changing one environment variable.
-
-## Architecture
-
-```
+```text
 Browser
   ↓
 Next.js App Router (React Server Components)
   ↓
-Auth.js Session (credentials or OAuth)
+Auth.js Session (Validates User Token)
   ↓
-Permission Layer (role + membership checks)
+Permission Layer (Role + Membership Checks)
   ↓
-Prisma ORM (type-safe queries)
+Prisma ORM (Tenant-Scoped Queries)
   ↓
 SQLite (file:./dev.db)
 ```
 
-## Database Schema
+## Database Schema Overview
 
-```
+```text
 User ──┬── Account (OAuth providers)
        ├── Session (auth tokens)
-       └── Membership ─── Organization ──┬── Project
-                                         ├── Invitation
-                                         └── AuditLog
+       └── Membership (Roles: OWNER, ADMIN, MEMBER)
+             │
+        Organization ──┬── Project
+                       ├── Invitation
+                       └── AuditLog
 ```
 
-Six core models: `User`, `Organization`, `Membership`, `Invitation`, `Project`, `AuditLog`.
+The schema is built around six core models: `User`, `Organization`, `Membership`, `Invitation`, `Project`, and `AuditLog`.
 
-## Tenant Isolation
+## Tenant Isolation Notes
 
-Every protected resource is scoped by `organizationId`. Queries never rely on route parameters alone — they always verify the current user's membership in the target organization.
+Every protected resource is strictly scoped by `organizationId`. Queries never rely on route parameters alone — they always verify the current user's membership and permissions in the target organization.
 
 ```ts
-// Bad — no tenant scope
+// ❌ Bad — No tenant scope (Vulnerable to IDOR)
 await prisma.project.findUnique({ where: { id: projectId } });
 
-// Good — scoped by organization
+// ✅ Good — Strictly scoped by organization
 await prisma.project.findFirst({
   where: { id: projectId, organizationId },
 });
 ```
 
-## Current Phase: Phase 8 (Testing)
+## Invitation Workflow
 
-TenantKit Lite is an open-source B2B SaaS starter. Phase 8 implements unit testing infrastructure.
+1. An `OWNER` or `ADMIN` generates an invitation link in the dashboard.
+2. An `Invitation` record is created in the database with a secure, expiring token.
+3. The recipient opens the link (`/invite/[token]`).
+4. If they do not have an account, they are prompted to register.
+5. Upon acceptance, a `Membership` record is created linking them to the organization, and the invitation is consumed.
 
-### Recent Additions (Phase 8)
-1. **Vitest Integration**: Installed Vitest and configured test scripts for blazing fast evaluations.
-2. **Security Testing**: Wrote dedicated `permissions.test.ts` focusing extensively on validating Role-Based Access Control mapping blocks (such as checking `isOwner` and verifying isolation for `ADMIN` and `MEMBER` users).
-3. **Data Verification Modules**: Extracted pure validation logic from `project-actions.ts` into a testable `isolation-logic.ts`. Additionally extracted pure validation rules regarding token expirations and email mismatches within user invitation hooks logically verified by `invitation.test.ts`. 
-4. **Mocked Services Testing**: Configured `audit.test.ts` wrapping around `vi.mock` validating that missing JSON dependencies log correctly, and errors generated don't structurally block app functions on a fallback.
+## Audit Logging
 
-### Testing Scope
-* **Covered**: Essential business logic (`lib/permissions.ts`, `lib/audit.ts`, `lib/isolation-logic.ts`, `lib/invitation-logic.ts`). These focus strictly on tenant isolation, role barriers, parsing security, and failing gracefully.
-* **Intentionally Not Covered**: React components or purely UI-focused snapshot workflows (e.g. `layout.tsx`, `page.tsx`). End-to-end tests requiring deep DB integration are skipped for now to avoid brittle CI pipelines. Standard API routes returning JSON or generic DB mutations that rely heavily on NextAuth contexts avoid complex mock boilerplate overhead in favor of pure utility abstractions.
+Critical actions (creating projects, editing resources, inviting members) are tracked. Audit logs capture the `actorId` (who did it), the `action` (what they did), the `entityId` (what was affected), and any relevant JSON metadata. This provides a transparent history for organization administrators.
 
-### Running Tests
-Ensure dependencies are fully installed, then run:
+## Testing & CI
 
-```bash
-# Execute integration sweeps
-npm run test
+TenantKit Lite prioritizes logic validation over brittle UI tests. Essential business logic covering tenant isolation, role barriers, token expirations, and audit integrations are heavily tested using Vitest.
 
-# Run and remain listening
-npm run test:watch 
-```
+- **Run tests locally:** `npm test` or `npm run test:watch`
+- **Continuous Integration:** GitHub Actions automatically runs linting, type-checking, builds, and unit tests on pushes and pull requests to `main`.
 
-### What's Next (Phase 9)
-Phase 9 will focus on **GitHub Actions CI**. We will integrate automated testing flows so that PRs validate code format, logic abstractions, and project building automatically.
+## Local Setup
 
+### Prerequisites
 - Node.js 18+
 - npm 9+
 
-### Setup
+### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/tenantkit-lite.git
-cd tenantkit-lite
+git clone https://github.com/Thaelith/TenantKit-Lite.git
+cd TenantKit-Lite
 
 # Install dependencies
 npm install
@@ -121,71 +129,28 @@ npm install
 cp .env.example .env
 
 # Generate a secure NEXTAUTH_SECRET (or use the default for dev)
-# node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
-# Run Prisma migration (creates dev.db)
+# Run Prisma migrations to initialize the SQLite database
 npx prisma migrate dev --name init
 
 # Start the development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the landing page.
-
-### Commands
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run lint` | Run ESLint |
-| `npx prisma studio` | Open database GUI |
-| `npx prisma migrate dev` | Run migrations |
-| `npx prisma db seed` | Seed demo data (coming soon) |
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## Environment Variables
 
 | Variable | Description | Default |
 |---|---|---|
-| `DATABASE_URL` | SQLite database path | `file:./dev.db` |
-| `NEXTAUTH_SECRET` | Auth.js JWT encryption secret | (required) |
-| `NEXTAUTH_URL` | Application URL | `http://localhost:3000` |
+| `DATABASE_URL` | SQLite database file path | `file:./dev.db` |
+| `NEXTAUTH_SECRET` | Auth.js JWT encryption secret | *(must be provided)* |
+| `NEXTAUTH_URL` | Application base URL | `http://localhost:3000` |
 
-## Authentication
+## Manual QA Checklist
 
-Authentication is handled by Auth.js (NextAuth v4) with a credentials provider and Prisma adapter.
-
-### Registration Flow
-1. User submits name, email, and password on `/register`
-2. Password is hashed with bcryptjs (12 rounds)
-3. User record is created
-4. A default organization is created (`{name}'s Workspace`)
-5. An Owner membership is created linking the user to the organization
-6. The user is automatically signed in and redirected to `/app`
-
-### Login Flow
-1. User submits email and password on `/login`
-2. Auth.js credentials provider verifies the password against the stored hash
-3. On success, the user is redirected to `/app`
-
-### Protected Routes
-- `/app` and all sub-routes require authentication
-- Unauthenticated users are redirected to `/login`
-
-### Key Files
-| File | Purpose |
-|---|---|
-| `src/lib/auth.ts` | Auth.js configuration (providers, callbacks, adapter) |
-| `src/lib/auth-actions.ts` | Server action for user registration |
-| `src/lib/session.ts` | `getCurrentUser()` and `requireAuth()` helpers |
-| `src/lib/validators.ts` | Zod schemas for login and register forms |
-| `src/lib/slug.ts` | Organization slug generator |
-| `src/app/api/auth/[...nextauth]/route.ts` | API route handler for Auth.js |
-| `src/components/Providers.tsx` | Client-side SessionProvider wrapper |
-
-## UI Design
-
-The interface follows a clean, professional B2B design system called "Slate & Snow" — deep slate-blue primary colors, cool-toned greys, Inter typeface, 1px borders, subtle card shadows, and no decorative excess. Design reference files are in `stitch_tenantkit_saas_dashboard/`.
+Before deploying or finalizing major features, refer to the [Manual QA Checklist](docs/manual-qa.md) located in the `docs/` folder to verify system integrity.
 
 ## Roadmap
 
@@ -198,20 +163,18 @@ The interface follows a clean, professional B2B design system called "Slate & Sn
 | 5 | Role-based access control enforcement | ✅ Complete |
 | 6 | Member invitation workflow | ✅ Complete |
 | 7 | Audit logging | ✅ Complete |
-| 8 | Testing (Vitest, React Testing Library) | ✅ Complete |
-| 9 | GitHub Actions CI | Upcoming |
-| 10 | Integrations & further refinements | Upcoming |
+| 8 | Testing (Vitest, validation logic) | ✅ Complete |
+| 9 | CI & GitHub portfolio polish | ✅ Complete |
+| 10 | Optional integrations & deployment prep | Upcoming |
 
-See `tenantkit-lite-sqlite-plan.md` for the full technical roadmap.
+## Security
 
-## Security Notes
+Please see [SECURITY.md](SECURITY.md) for vulnerability reporting and architecture principles.
 
-- Tenant isolation is enforced at the query layer, not the route layer
-- Passwords are hashed with bcryptjs (12 salt rounds); never stored in plain text
-- Role escalation is prevented — no user can assign a role higher than their own
-- Audit logs capture metadata as JSON strings for SQLite compatibility
-- `.env` and `prisma/dev.db` are excluded from source control
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
 
 ## License
 
-TBD
+[MIT License](LICENSE)
