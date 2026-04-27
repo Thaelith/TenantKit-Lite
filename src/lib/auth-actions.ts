@@ -35,31 +35,32 @@ export async function registerAction(
 
   const passwordHash = await bcrypt.hash(password, 12);
 
-  const user = await prisma.user.create({
-    data: { name, email, passwordHash },
-  });
-
-  let orgSlug = generateOrgSlug(name);
+  const orgSlug = generateOrgSlug(name);
   const slugExists = await prisma.organization.findUnique({
-    where: { slug: orgSlug },
-  });
-  if (slugExists) {
-    orgSlug = `${orgSlug}-${user.id.slice(-6)}`;
-  }
-
-  const organization = await prisma.organization.create({
-    data: {
-      name: `${name}'s Workspace`,
-      slug: orgSlug,
-    },
+    where: { slug: orgSlug }, // We check outside transaction since it's an optimistic check
   });
 
-  await prisma.membership.create({
-    data: {
-      userId: user.id,
-      organizationId: organization.id,
-      role: "OWNER",
-    },
+  await prisma.$transaction(async (tx) => {
+    const user = await tx.user.create({
+      data: { name, email, passwordHash },
+    });
+
+    const finalSlug = slugExists ? `${orgSlug}-${user.id.slice(-6)}` : orgSlug;
+
+    const organization = await tx.organization.create({
+      data: {
+        name: `${name}'s Workspace`,
+        slug: finalSlug,
+      },
+    });
+
+    await tx.membership.create({
+      data: {
+        userId: user.id,
+        organizationId: organization.id,
+        role: "OWNER",
+      },
+    });
   });
 
   return { success: true };

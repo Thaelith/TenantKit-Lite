@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { CopyInviteLink } from "@/components/CopyInviteLink";
 import { revokeInvitation, removeMember } from "./member-actions";
-import { canManageMembers, canRemoveMember } from "@/lib/permissions";
+import { canManageMembers, canRemoveMember, canInviteRole } from "@/lib/permissions";
 
 export default async function MembersPage() {
   const membership = await requireOrganizationAccess();
@@ -155,7 +155,9 @@ export default async function MembersPage() {
                         {new Date(invite.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-3 text-right whitespace-nowrap flex items-center justify-end gap-1">
-                        <CopyInviteLink token={invite.token} />
+                        {canInviteRole(actorRole, invite.role) && (
+                          <CopyInviteLink token={invite.token} />
+                        )}
                         {canRemoveMember(actorRole, invite.role) && (
                           <form action={revokeInvitation} className="inline-block">
                             <input type="hidden" name="id" value={invite.id} />

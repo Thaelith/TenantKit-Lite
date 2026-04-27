@@ -1,4 +1,10 @@
-export type Role = "OWNER" | "ADMIN" | "MEMBER";
+export const ROLES = {
+  OWNER: "OWNER",
+  ADMIN: "ADMIN",
+  MEMBER: "MEMBER",
+} as const;
+
+export type Role = typeof ROLES[keyof typeof ROLES];
 
 export function isOwner(role: string): boolean {
   return role === "OWNER";

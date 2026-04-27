@@ -1,9 +1,14 @@
 "use server";
 
+import { z } from "zod";
 import { requireOrganizationAccess } from "./session";
 import { prisma } from "./prisma";
 import { canManageOrganization, requirePermission } from "./permissions";
 import { createAuditLog } from "./audit";
+
+const updateOrgSchema = z.object({
+  name: z.string().trim().min(3, "Name must be at least 3 characters.").max(100, "Name must not exceed 100 characters."),
+});
 
 export async function updateOrganizationName(formData: FormData) {
   const membership = await requireOrganizationAccess();
@@ -14,11 +19,13 @@ export async function updateOrganizationName(formData: FormData) {
   );
   
   const orgId = membership.organizationId;
-  const newName = formData.get("name") as string;
+  const rawName = formData.get("name");
   
-  if (!newName || newName.length < 3) {
-    throw new Error("Name must be at least 3 characters.");
+  const parsed = updateOrgSchema.safeParse({ name: rawName });
+  if (!parsed.success) {
+    throw new Error(parsed.error.issues[0].message);
   }
+  const newName = parsed.data.name;
   
   const organization = await prisma.organization.findUnique({
     where: { id: orgId },
